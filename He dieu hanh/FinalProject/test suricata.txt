@@ -1,0 +1,19 @@
+Suricata test command:sudo tail -f /var/log/suricata/eve.json | jq 'select(.event_type=="alert")'
+Json log file stored in: /var/log/suricata/eve.json
+Suricata rules stored in: /etc/suricata/rules/local.rules
+Client Snmp configuration file: /etc/snmp/snmpd.conf
+Librenms configuration in: /opt/librenms/.env
+
+
+######TEST SURICATA
+SSH Bruteforce:
+for i in {1..6}; do            
+    ssh -o ConnectTimeout=2 user@192.168.100.1 2>/dev/null || true
+    sleep 1
+done
+
+Network Scan:
+nmap -sS [destip]
+
+Bulk data transfer: 
+dd if=/dev/zero bs=1M count=100 | nc 192.168.100.1 8080
