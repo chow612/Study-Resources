@@ -1,0 +1,10 @@
+opencv-python==4.10.0.82
+PyAutoGUI==0.9.54
+PyQt5==5.15.11
+PySide6==6.9.1
+rich==14.0.0
+setuptools==80.9.0
+socket.py==0.1.0
+subprocess.run==0.0.8
+threaded==4.2.0
+websockets==15.0.1
