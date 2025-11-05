@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default'
+        });
+    </script>
+</head>
+<body>
+    <div class="mermaid">
+graph LR
+    %% External Network
+    Internet([Internet<br/>8.8.8.8])
+    
+    %% VMware Infrastructure
+    subgraph VMHost["VMware Workstation Host"]
+        NAT[VMnet8 NAT<br/>192.168.xxx.0/24]
+        
+        subgraph VMNet2["VMnet2 Host-Only Network<br/>192.168.100.0/24"]
+            %% Kali Linux Gateway
+            KaliVM["🖥️ Kali Linux Gateway<br/>192.168.100.1<br/><br/>• DHCP Server (.10-.50)<br/>• LibreNMS Web Interface<br/>• Suricata IDS<br/>• Auto-Discovery Service<br/>• iptables Firewall + NAT"]
+            
+            %% Client VMs - Simplified
+            ClientVMs["💻 Client VMs<br/>192.168.100.10-50<br/><br/>• Auto-assigned DHCP<br/>• SNMP Enabled<br/>• Auto-discovered<br/>• Monitored by LibreNMS"]
+        end
+    end
+    
+    %% Connections
+    Internet --> NAT
+    NAT --> KaliVM
+    KaliVM <--> ClientVMs
+    
+    %% Data Flow Labels
+    KaliVM -.->|SNMP Polling<br/>Performance Monitoring| ClientVMs
+    ClientVMs -->|All Network Traffic<br/>Security Monitoring| KaliVM
+    KaliVM -->|Internet Access<br/>via NAT| NAT
+    
+    %% Styling
+    classDef gateway fill:#ff9999,stroke:#333,stroke-width:3px,color:#000
+    classDef clients fill:#99ccff,stroke:#333,stroke-width:3px,color:#000
+    classDef network fill:#e6e6e6,stroke:#333,stroke-width:2px,color:#000
+    classDef internet fill:#ff6b6b,stroke:#333,stroke-width:2px,color:#000
+    
+    class KaliVM gateway
+    class ClientVMs clients
+    class VMNet2 network
+    class Internet,NAT internet
+    </div>
+</body>
+</html>
